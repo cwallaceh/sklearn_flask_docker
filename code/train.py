@@ -7,9 +7,12 @@ from sklearn.svm import SVC
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
+from sklearn.metrics import ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
 import pandas as pd
 import joblib
 import gzip
+import pdb
 
 
 # Load the data set
@@ -39,12 +42,16 @@ pipe = Pipeline([
     ('imputer', SimpleImputer()),  # Missing value Imputer
     ('scaler', MinMaxScaler(feature_range=(0, 1))),  # Min Max Scaler
     ('model', ensemble)
-    ])
+])
 
 pipe.fit(X_train, y_train)
 
 # Test Accuracy
 print("Accuracy: %s" % str(pipe.score(X_test, y_test)))
+
+# Plot confusion matrix
+print(ConfusionMatrixDisplay.from_estimator(pipe, X_test, y_test))
+plt.show()
 
 # Export model
 joblib.dump(pipe, gzip.open('model/model_binary.dat.gz', "wb"))
