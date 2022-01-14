@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import joblib
 import gzip
-import pdb
 
 
 # Load the data set
