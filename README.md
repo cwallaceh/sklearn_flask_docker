@@ -71,3 +71,7 @@ Now that we have our web application running, we can use the Dockerfile to creat
 And now we can test our application using Docker
 
 `$ docker run -p 8000:8000 from_ds_to_mlops`
+
+# Test!
+
+Test by using the calls in tests/example_calls.txt from the terminal
