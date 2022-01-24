@@ -14,35 +14,36 @@ import joblib
 import gzip
 
 
-# Load the data set
+# Load the dataset
 data = pd.read_csv('data/breast_cancer.csv')
 
-# Preprocess data set
+# Preprocess dataset
 data = data.set_index('id')
 del data['Unnamed: 32']
 data['diagnosis'] = data['diagnosis'].replace(['B', 'M'], [0, 1])  # Encode y, B -> 0 , M -> 1
 
-# Split into train and test
+# Split into train and test set, 80%-20%
 y = data.pop('diagnosis')
 X = data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Model, Voting Classifier
+# Create an ensemble of 3 models
 estimators = []
 estimators.append(('logistic', LogisticRegression()))
 estimators.append(('cart', DecisionTreeClassifier()))
 estimators.append(('svm', SVC()))
 
-# Create the ensemble model
+# Create the Ensemble Model
 ensemble = VotingClassifier(estimators)
 
 # Make preprocess Pipeline
 pipe = Pipeline([
     ('imputer', SimpleImputer()),  # Missing value Imputer
     ('scaler', MinMaxScaler(feature_range=(0, 1))),  # Min Max Scaler
-    ('model', ensemble)
+    ('model', ensemble)  # Ensemble Model
 ])
 
+# Train the model
 pipe.fit(X_train, y_train)
 
 # Test Accuracy
